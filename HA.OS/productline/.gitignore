@@ -1,0 +1,4 @@
+# Generated at runtime by botline.py — never commit
+products/
+store/
+*.log
