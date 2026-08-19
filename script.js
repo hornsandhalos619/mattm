@@ -152,6 +152,11 @@ function filterPlans(type) {
   renderFloorPlans(type);
 }
 
+/* --- Hero search Enter key --- */
+function handleHeroSearch(e) {
+  if (e.key === 'Enter') filterByNeighborhood(e.target.value.trim());
+}
+
 /* --- Hero search filter to neighborhoods --- */
 function filterByNeighborhood(query) {
   if (!query) { renderFloorPlans('all'); return; }
