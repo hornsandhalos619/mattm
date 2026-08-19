@@ -9,11 +9,11 @@ const FLOOR_PLANS = [
     desc:'Effortless city living. A smart Studio layout with premium finishes throughout, a full kitchen, and an en-suite spa bath.'},
   { id:'1bed', name:'The One Bedroom', price:'$2,450', perMonth:'/mo', beds:'1 Bed', baths:'1 Bath', sqft:'780 sqft', gradient:'linear-gradient(135deg,#2a9d8f 0%,#264653 100%)', features:{'Max Height':'9\' 6"', 'Window': "Floor-to-ceiling", 'Balcony': 'Private', 'Laundry': 'In-unit', 'Parking': '1 Space' },
     desc:'The ideal urban retreat. A spacious one-bedroom with a separate chef\'s kitchen, walk-in closet, and private balcony.'},
-  { id:'2bed', name:'The Two Bedroom', price:'$3,350', perMonth:'/mo', beds:'2 Beds', baths:'2 Baths', sqft:'1,100 sqft', gradient:'linear-gradient(135deg,#e76f51 0%,#f4a261 100%)', features:{'Max Height':'10\'", 'Window': "Floor-to-ceiling", 'Balcony': 'Corner Wrap', 'Laundry': 'In-unit', 'Parking': '2 Spaces' },
+  { id:'2bed', name:'The Two Bedroom', price:'$3,350', perMonth:'/mo', beds:'2 Beds', baths:'2 Baths', sqft:'1,100 sqft', gradient:'linear-gradient(135deg,#e76f51 0%,#f4a261 100%)', features:{'Max Height':'10 ft', 'Window': "Floor-to-ceiling", 'Balcony': 'Corner Wrap', 'Laundry': 'In-unit', 'Parking': '2 Spaces' },
     desc:'Room to breathe. Two full bedrooms, an open-plan living area, corner wrap balcony with sunset views.'},
-  { id:'3bed', name:'The Three Bedroom', price:'$4,500', perMonth:'/mo', beds:'3 Beds', baths:'2 Baths', sqft:'1,450 sqft', gradient:'linear-gradient(135deg,#264653 0%,#2a9d8f 100%)', features:{'Max Height':'10\'", 'Window': "Floor-to-ceiling", 'Balcony': 'Terrace', 'Laundry': 'In-unit', 'Parking': '2 Spaces' },
+  { id:'3bed', name:'The Three Bedroom', price:'$4,500', perMonth:'/mo', beds:'3 Beds', baths:'2 Baths', sqft:'1,450 sqft', gradient:'linear-gradient(135deg,#264653 0%,#2a9d8f 100%)', features:{'Max Height':'10 ft', 'Window': "Floor-to-ceiling", 'Balcony': 'Terrace', 'Laundry': 'In-unit', 'Parking': '2 Spaces' },
     desc:'The ultimate family layout. Three bedrooms, a great room with dining, and a full terrace overlooking the bay.'},
-  { id:'penthouse', name:'The Penthouse', price:'$5,200', perMonth:'/mo', beds:'3 Beds', baths:'2.5 Baths', sqft:'1,800 sqft', gradient:'linear-gradient(135deg,#e76f51 0%,#264653 50%,#f4a261 100%)', features:{'Max Height':'12\'", 'Window': "Panoramic", 'Balcony': 'Rooftop Deck', 'Laundry': 'In-unit Miele', 'Parking': '3 Spaces' },
+  { id:'penthouse', name:'The Penthouse', price:'$5,200', perMonth:'/mo', beds:'3 Beds', baths:'2.5 Baths', sqft:'1,800 sqft', gradient:'linear-gradient(135deg,#e76f51 0%,#264653 50%,#f4a261 100%)', features:{'Max Height':'12 ft', 'Window': "Panoramic", 'Balcony': 'Rooftop Deck', 'Laundry': 'In-unit Miele', 'Parking': '3 Spaces' },
     desc:'At the top. A full-floor penthouse with 360-degree panoramic views, private rooftop deck, and Italian marble baths.'},
   { id:'garden', name:'The Garden Suite', price:'$3,800', perMonth:'/mo', beds:'2 Beds (Flex)', baths:'1 Bath', sqft:'950 sqft', gradient:'linear-gradient(135deg,#d4a373 0%,#e9c46a 100%)', features:{'Max Height':'9\' 6"', 'Window': "Garden-facing", 'Balcony': 'Patios Access', 'Laundry': 'In-unit', 'Parking': '1 Space' },
     desc:'Ground-floor living at its finest. A flexible second bedroom, direct patio access to the landscaped garden courtyard.'},
@@ -305,12 +305,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const splash = document.getElementById('splashScreen');
   if (splash) {
     // Hide splash after 3 seconds
-    setTimeout(() => {
+    const hideSplash = () => {
       splash.classList.add('hide');
-    }, 3000);
+    };
+    setTimeout(hideSplash, 3000);
     // Allow click to skip
-    splash.addEventListener('click', () => {
-      splash.classList.add('hide');
+    splash.addEventListener('click', hideSplash);
+    // After fade out, remove from DOM to prevent any interference
+    splash.addEventListener('transitionend', (e) => {
+      if (e.propertyName === 'opacity' && splash.classList.contains('hide')) {
+        splash.style.display = 'none';
+      }
     });
   }
 });
