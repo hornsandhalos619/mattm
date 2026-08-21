@@ -301,3 +301,20 @@ ul{list-style:none;}
   margin: 0 auto;
 }
 
+/* ===== ANNOUNCEMENT BANNER ===== */
+.announcement-banner {
+  background: linear-gradient(135deg, var(--terra), var(--gold));
+  color: var(--white);
+  padding: 12px 24px;
+  text-align: center;
+  font-weight: 600;
+  font-size: .9rem;
+  z-index: 1001;
+  animation: bannerSlide .3s ease;
+}
+@keyframes bannerSlide {
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: none; }
+}
+.navbar { z-index: 1002; }
+
