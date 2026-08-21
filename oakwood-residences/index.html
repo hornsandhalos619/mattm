@@ -6,8 +6,15 @@
 <title>Oakwood Residences San Diego - Find a great place to live!</title>
 <meta name="description" content="Fine rentals city-wide — homes and apartments for rent. Explore Oakwood Residences San Diego with premium floor plans, resort-style amenities, and walkable locations in every major neighborhood.">
 <link rel="stylesheet" href="style.css">
+<script src="store.js"></script>
+<script>
+  window.OAKWOOD_CONFIG = { authProvider: 'static-demo' };
+</script>
 </head>
 <body>
+<!-- Announcement Banner (injected by store settings) -->
+<div id="announcementBanner" class="announcement-banner hidden"></div>
+
 <!-- Splash Screen -->
 <div id="splashScreen">
   <div class="splash-content">
@@ -20,7 +27,7 @@
       <span>Oakwood</span>
     </div>
     <h1>Welcome to Oakwood Residences</h1>
-    <p>Luxury apartment living in the heart of San Diego</p>
+    <p id="splashMessage">Luxury apartment living in the heart of San Diego</p>
   </div>
 </div>
 
@@ -224,6 +231,7 @@
       <a href="#">Terms of Use</a>
       <a href="#">Fair Housing</a>
       <a href="#">Accessibility</a>
+      <a href="admin.html" id="adminPortalLink" class="hidden">Admin portal</a>
     </div>
     <div class="footer-col">
       <h4>Follow Us</h4>

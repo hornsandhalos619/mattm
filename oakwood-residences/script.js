@@ -1,24 +1,9 @@
 /* ========================================
    OAKWOOD RESIDENCES SAN DIEGO — SCRIPTS
-   All functionality: navigation, filters, modals, chatbot, scroll animations.
+   Uses shared OAKWOOD_STORE from store.js for data persistence.
    ======================================== */
 
-/* --- Data --- */
-const FLOOR_PLANS = [
-  { id:'studio', name:'The Studio', price:'$1,895', perMonth:'/mo', beds:'Studio', baths:'1 Bath', sqft:'650 sqft', gradient:'linear-gradient(135deg,#f4a261 0%,#e9c46a 100%)', features:{'Max Height':'9\' 6"', 'Window': 'Floor-to-ceiling', 'Balcony': 'None', 'Laundry': 'Building', 'Parking': '1 Space' },
-    desc:'Effortless city living. A smart Studio layout with premium finishes throughout, a full kitchen, and an en-suite spa bath.'},
-  { id:'1bed', name:'The One Bedroom', price:'$2,450', perMonth:'/mo', beds:'1 Bed', baths:'1 Bath', sqft:'780 sqft', gradient:'linear-gradient(135deg,#2a9d8f 0%,#264653 100%)', features:{'Max Height':'9\' 6"', 'Window': "Floor-to-ceiling", 'Balcony': 'Private', 'Laundry': 'In-unit', 'Parking': '1 Space' },
-    desc:'The ideal urban retreat. A spacious one-bedroom with a separate chef\'s kitchen, walk-in closet, and private balcony.'},
-  { id:'2bed', name:'The Two Bedroom', price:'$3,350', perMonth:'/mo', beds:'2 Beds', baths:'2 Baths', sqft:'1,100 sqft', gradient:'linear-gradient(135deg,#e76f51 0%,#f4a261 100%)', features:{'Max Height':'10 ft', 'Window': "Floor-to-ceiling", 'Balcony': 'Corner Wrap', 'Laundry': 'In-unit', 'Parking': '2 Spaces' },
-    desc:'Room to breathe. Two full bedrooms, an open-plan living area, corner wrap balcony with sunset views.'},
-  { id:'3bed', name:'The Three Bedroom', price:'$4,500', perMonth:'/mo', beds:'3 Beds', baths:'2 Baths', sqft:'1,450 sqft', gradient:'linear-gradient(135deg,#264653 0%,#2a9d8f 100%)', features:{'Max Height':'10 ft', 'Window': "Floor-to-ceiling", 'Balcony': 'Terrace', 'Laundry': 'In-unit', 'Parking': '2 Spaces' },
-    desc:'The ultimate family layout. Three bedrooms, a great room with dining, and a full terrace overlooking the bay.'},
-  { id:'penthouse', name:'The Penthouse', price:'$5,200', perMonth:'/mo', beds:'3 Beds', baths:'2.5 Baths', sqft:'1,800 sqft', gradient:'linear-gradient(135deg,#e76f51 0%,#264653 50%,#f4a261 100%)', features:{'Max Height':'12 ft', 'Window': "Panoramic", 'Balcony': 'Rooftop Deck', 'Laundry': 'In-unit Miele', 'Parking': '3 Spaces' },
-    desc:'At the top. A full-floor penthouse with 360-degree panoramic views, private rooftop deck, and Italian marble baths.'},
-  { id:'garden', name:'The Garden Suite', price:'$3,800', perMonth:'/mo', beds:'2 Beds (Flex)', baths:'1 Bath', sqft:'950 sqft', gradient:'linear-gradient(135deg,#d4a373 0%,#e9c46a 100%)', features:{'Max Height':'9\' 6"', 'Window': "Garden-facing", 'Balcony': 'Patios Access', 'Laundry': 'In-unit', 'Parking': '1 Space' },
-    desc:'Ground-floor living at its finest. A flexible second bedroom, direct patio access to the landscaped garden courtyard.'},
-];
-
+/* --- Data (amenities & neighborhoods are static) --- */
 const AMENITIES = [
   { icon:'&#x1F3D6;&#xFE0F;', title:'Pool & Spa', desc:'Heated infinity pool with cabanas and a spa deck for quiet time.' },
   { icon:'&#x1F3CB;', title:'Fitness Center', desc:'2,400 sqft gym with Peloton studio, yoga room, and personal trainers.' },
@@ -32,7 +17,7 @@ const AMENITIES = [
 
 const NEIGHBORHOODS = [
   { name:'Downtown', desc:'Walking distance to the waterfront, USS Midway Museum, and Gaslamp Quarter nightlife.', gradient:'linear-gradient(135deg,#264653,#2a9d8f)' },
-  { name:'Little Italy', desc:'The city\'s foodie capital — farm-to-table restaurants, artisan markets, and daily farmers market steps away.' },
+  { name:'Little Italy', desc:"The city's foodie capital — farm-to-table restaurants, artisan markets, and daily farmers market steps away." },
   { name:'Hillcrest', desc:'Vibrant cultural hub with Balboa Park, renowned dining, cafes, and a thriving LGBTQ+ community.', gradient:'linear-gradient(135deg,#e76f51,#f4a261)' },
   { name:'North Park', desc:'Bohemian neighborhood with craft breweries, vintage shops, street art, and the historic North Park Theatre.' },
   { name:'Mission Hills', desc:'Quiet, tree-lined streets with mid-century architecture and proximity to Old Town San Diego.' },
@@ -71,12 +56,17 @@ function closeMobile() {
   document.getElementById('mobileMenu').classList.remove('active');
 }
 
-/* --- Render Floor Plans --- */
+/* --- Render Floor Plans from store --- */
+function getFloorPlans() {
+  return window.OAKWOOD_STORE ? OAKWOOD_STORE.getFloorPlans() : [];
+}
+
 function renderFloorPlans(filter = 'all') {
   const grid = document.getElementById('floorPlanGrid');
   if (!grid) return;
+  const plans = getFloorPlans();
   grid.innerHTML = '';
-  FLOOR_PLANS.forEach((plan, idx) => {
+  plans.forEach((plan, idx) => {
     const show = filter === 'all' || plan.id === filter;
     const card = document.createElement('div');
     card.className = `property-card fade-in ${show ? '' : 'hidden'}`;
@@ -97,7 +87,6 @@ function renderFloorPlans(filter = 'all') {
         <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="openPlanModal('${plan.id}')">Learn More</button>
       </div>`;
     grid.appendChild(card);
-    // Trigger fade-in after a short delay for stagger effect
     setTimeout(() => card.classList.add('visible'), idx * 80);
   });
 }
@@ -119,29 +108,22 @@ function renderAmenities() {
 function renderNeighborhoods() {
   const layout = document.getElementById('neighborhoodsLayout');
   if (!layout) return;
-  // Build map area
   let mapHtml = `<div class="nbr-map"><div style="position:relative;z-index:1;"><p style="font-size:3rem;margin-bottom:12px;">&#x1F3D6;&#xFE0F;</p><strong>San Diego</strong><br><span style="opacity:.7;font-size:.85rem;">Oakwood Residences is centrally located</span></div></div>`;
-  // Build info area
   let infoHtml = `<div class="nbr-info"><div class="nbr-filter-pills">`;
   NEIGHBORHOODS.forEach((n, i) => {
     infoHtml += `<button class="nbr-pill ${i === 0 ? 'active' : ''}" onclick="selectNbr(${i})">${n.name}</button>`;
   });
   infoHtml += `</div><div class="nbr-desc"><p>${NEIGHBORHOODS[0].desc}</p></div></div>`;
   layout.innerHTML = mapHtml + infoHtml;
-
-  // Animate in
   const items = layout.querySelectorAll('.fade-in, .nbr-map, .nbr-info');
   items.forEach((el, i) => { setTimeout(() => el.classList.add('visible'), i * 80); });
 }
 
 function selectNbr(idx) {
   const n = NEIGHBORHOODS[idx];
-  // Update pill states
   document.querySelectorAll('.nbr-pill').forEach((p, i) => p.classList.toggle('active', i === idx));
-  // Update map gradient
   const map = document.querySelector('.nbr-map');
   if (map) { const bg = n.gradient || 'linear-gradient(135deg,var(--teal),var(--teal-light))'; map.style.background = bg; }
-  // Update desc
   const descEl = document.querySelector('.nbr-desc p');
   if (descEl) descEl.textContent = n.desc;
 }
@@ -167,7 +149,8 @@ function filterByNeighborhood(query) {
 
 /* --- Open Floor Plan Detail Modal --- */
 function openPlanModal(planId) {
-  const plan = FLOOR_PLANS.find(p => p.id === planId);
+  const plans = getFloorPlans();
+  const plan = plans.find(p => p.id === planId);
   if (!plan) return;
   const modal = document.getElementById('planModal');
   const heroEl = document.getElementById('modalHero');
@@ -202,7 +185,6 @@ function openInquiryModal(planName) {
 }
 function closeInquiryModal() {
   document.getElementById('inquiryModal').classList.remove('active');
-  // Reset quick form visibility
   const qs = document.getElementById('quickFormSuccess');
   if (qs) qs.classList.add('hidden');
   document.querySelector('#inquiryModal form')?.reset();
@@ -258,13 +240,11 @@ function sendChat() {
 
 function sendMessage(msg) {
   const box = document.getElementById('chatbotMessages');
-  // User message
   const userDiv = document.createElement('div');
   userDiv.className = 'msg user';
   userDiv.textContent = msg;
   box.appendChild(userDiv);
 
-  // Find matching reply
   const lower = msg.toLowerCase();
   let reply = null;
   for (const entry of CHATBOT_KNOWLEDGE) {
@@ -272,7 +252,6 @@ function sendMessage(msg) {
   }
   if (!reply) reply = 'Thanks for your interest! For specific questions, please reach out to our leasing team at **(619) 555-0188** or use the contact form on our site.';
 
-  // Bot message with delayed typing feel
   setTimeout(() => {
     const botDiv = document.createElement('div');
     botDiv.className = 'msg bot';
@@ -289,7 +268,6 @@ function initScrollAnimations() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 }
 
@@ -298,25 +276,84 @@ document.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal-overlay')) { closePlanModal(); closeInquiryModal(); }
 });
 
+/* --- Initialize site from store --- */
+function applySiteSettings() {
+  if (!window.OAKWOOD_STORE) return;
+  const s = OAKWOOD_STORE.getSettings();
+
+  // Page title
+  if (s.siteTitle) document.title = s.siteTitle;
+
+  // Hero badge
+  const heroBadge = document.querySelector('.hero-badge');
+  if (heroBadge && s.heroBadge) heroBadge.innerHTML = s.heroBadge;
+
+  // Hero heading
+  const heroH1 = document.querySelector('.hero-content h1');
+  if (heroH1) {
+    const span = heroH1.querySelector('span');
+    if (s.heroHeading) heroH1.firstChild.textContent = s.heroHeading + ' ';
+    if (span && s.heroHighlight) span.textContent = s.heroHighlight;
+  }
+
+  // Hero subheading
+  const heroP = document.querySelector('.hero-content > p');
+  if (heroP && s.heroSubheading) heroP.textContent = s.heroSubheading;
+
+  // Announcement banner
+  const banner = document.getElementById('announcementBanner');
+  if (banner && s.announcementEnabled && s.announcementText) {
+    banner.textContent = s.announcementText;
+    banner.classList.remove('hidden');
+  } else if (banner) {
+    banner.classList.add('hidden');
+  }
+
+  // Contact info
+  const addr = document.querySelector('.contact-item div');
+  if (addr && s.contactAddress) addr.innerHTML = '<strong>Sales Gallery</strong><br>' + s.contactAddress;
+
+  const phoneEl = document.querySelectorAll('.contact-item')[1];
+  if (phoneEl && s.contactPhone) phoneEl.querySelector('div').innerHTML = '<strong>Phone</strong><br>' + s.contactPhone;
+
+  const emailEl = document.querySelectorAll('.contact-item')[2];
+  if (emailEl && s.contactEmail) emailEl.querySelector('div').innerHTML = '<strong>Email</strong><br>' + s.contactEmail;
+
+  const hoursEl = document.querySelectorAll('.contact-item')[3];
+  if (hoursEl && s.contactHours) hoursEl.querySelector('div').innerHTML = '<strong>Office Hours</strong><br>' + s.contactHours;
+
+  // Footer tagline
+  const footerTagline = document.querySelector('.footer-col p');
+  if (footerTagline && s.footerTagline) footerTagline.textContent = s.footerTagline;
+}
+
 /* --- Initialize --- */
 document.addEventListener('DOMContentLoaded', () => {
+  // Apply site settings first (before render so content is there)
+  applySiteSettings();
+
+  // Admin portal link in footer (only show if admin session in this browser)
+  const adminLink = document.getElementById('adminPortalLink');
+  if (adminLink) {
+    try {
+      const adminSession = JSON.parse(sessionStorage.getItem('oakwoodAdminSession'));
+      if (adminSession?.role === 'admin') adminLink.classList.remove('hidden');
+    } catch (_) {}
+  }
+
   renderFloorPlans();
   renderAmenities();
   renderNeighborhoods();
   initScrollAnimations();
 });
+
 /* ===== SPLASH SCREEN FUNCTIONALITY ===== */
 document.addEventListener('DOMContentLoaded', () => {
   const splash = document.getElementById('splashScreen');
   if (splash) {
-    // Hide splash after 3 seconds
-    const hideSplash = () => {
-      splash.classList.add('hide');
-    };
+    const hideSplash = () => { splash.classList.add('hide'); };
     setTimeout(hideSplash, 3000);
-    // Allow click to skip
     splash.addEventListener('click', hideSplash);
-    // After fade out, remove from DOM to prevent any interference
     splash.addEventListener('transitionend', (e) => {
       if (e.propertyName === 'opacity' && splash.classList.contains('hide')) {
         splash.style.display = 'none';
