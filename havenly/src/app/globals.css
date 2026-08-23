@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #d4af37;
+  --crimson: #8a0303;
+}
+
+body {
+  background: #050505;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.35);
+}

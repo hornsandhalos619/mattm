@@ -52,6 +52,17 @@ Uncomment the `CNAME` file and add your domain (e.g., `oakwoodresidences.com`). 
 - Smooth scroll animations via Intersection Observer
 - Warm gold/terracotta design system with CSS custom properties
 
+## Admin Control Panel
+
+Open `admin.html` to use the control panel. The included static demo account is:
+
+- Email: `alexmark7975@gmail.com`
+- Password: `Oakwood6!`
+
+The panel supports rental CRUD, private inquiry review with `mailto:` replies, chatbot transcript review, basic site statistics, and splash-screen banner settings. Public inquiries, chatbot sessions, rentals, and site settings are shared through browser storage for local demonstration.
+
+**Production security requirement:** this repository is a static site, so its demo login is not a real security boundary. Before deploying sensitive admin features, replace the `static-demo` auth adapter with a server-side identity provider and enforce the `admin` role on API/database requests. Do not store private messages or credentials in browser storage in production.
+
 ## Tech Stack
 
 Static HTML/CSS/JS — no frameworks, no build tools. Ready to deploy anywhere.
