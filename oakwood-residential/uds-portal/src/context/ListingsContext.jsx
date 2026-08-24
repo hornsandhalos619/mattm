@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { supabase } from '../lib/supabase'
 
 const ListingsContext = createContext(null)
 
@@ -93,50 +94,142 @@ const THEME_PRESETS = [
 ]
 
 export const ListingsProvider = ({ children }) => {
-  const [listings, setListings] = useState(() => {
-    const stored = localStorage.getItem('oakwood_listings')
-    if (stored) {
-      try {
-        return JSON.parse(stored)
-      } catch (e) {
-        return DEFAULT_LISTINGS
+  const [listings, setListings] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch listings from Supabase
+  const fetchListings = useCallback(async () => {
+    setLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*')
+        .order('created_at', { ascending: true })
+      
+      if (error) {
+        console.error('Error fetching listings:', error)
+        // Fallback to defaults if table doesn't exist yet
+        setListings(DEFAULT_LISTINGS)
+        await seedDefaults()
+      } else if (data && data.length > 0) {
+        // Transform Supabase data to match app format
+        const transformed = data.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          beds: item.beds,
+          baths: item.baths,
+          sqft: item.sqft,
+          gradient: item.gradient,
+          features: item.features,
+          desc: item.description,
+          available: item.available,
+          images: item.images || []
+        }))
+        setListings(transformed)
+      } else {
+        // Empty table - seed defaults
+        setListings(DEFAULT_LISTINGS)
+        await seedDefaults()
       }
+    } catch (err) {
+      console.error('Fetch error:', err)
+      setListings(DEFAULT_LISTINGS)
+    } finally {
+      setLoading(false)
     }
-    return DEFAULT_LISTINGS
-  })
-  const [loading, setLoading] = useState(false)
+  }, [])
 
+  // Seed default listings into Supabase
+  const seedDefaults = useCallback(async () => {
+    const records = DEFAULT_LISTINGS.map(item => ({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      beds: item.beds,
+      baths: item.baths,
+      sqft: item.sqft,
+      gradient: item.gradient,
+      features: item.features,
+      description: item.desc,
+      available: item.available,
+      images: item.images || []
+    }))
+
+    const { error } = await supabase
+      .from('listings')
+      .upsert(records, { onConflict: 'id' })
+    
+    if (error) console.error('Seed error:', error)
+  }, [])
+
+  // Subscribe to realtime changes
   useEffect(() => {
-    localStorage.setItem('oakwood_listings', JSON.stringify(listings))
-    // Also sync to the main site's localStorage key
-    localStorage.setItem('oakwood_floor_plans_v1', JSON.stringify(listings))
-  }, [listings])
+    fetchListings()
 
-  const addListing = useCallback((listing) => {
+    const channel = supabase
+      .channel('listings_changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'listings' }, (payload) => {
+        console.log('Realtime change:', payload)
+        fetchListings() // Refetch on any change
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [fetchListings])
+
+  const addListing = useCallback(async (listing) => {
     const newListing = {
       ...listing,
       id: 'listing_' + Date.now(),
-      createdAt: new Date().toISOString()
+      created_at: new Date().toISOString()
     }
-    setListings(prev => [...prev, newListing])
+
+    const { error } = await supabase
+      .from('listings')
+      .insert([newListing])
+    
+    if (error) {
+      console.error('Add listing error:', error)
+      throw error
+    }
+    // Realtime will trigger fetchListings
     return newListing
   }, [])
 
-  const updateListing = useCallback((id, updates) => {
-    setListings(prev => prev.map(l => l.id === id ? { ...l, ...updates, updatedAt: new Date().toISOString() } : l))
+  const updateListing = useCallback(async (id, updates) => {
+    const { error } = await supabase
+      .from('listings')
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq('id', id)
+    
+    if (error) {
+      console.error('Update listing error:', error)
+      throw error
+    }
   }, [])
 
-  const deleteListing = useCallback((id) => {
-    setListings(prev => prev.filter(l => l.id !== id))
+  const deleteListing = useCallback(async (id) => {
+    const { error } = await supabase
+      .from('listings')
+      .delete()
+      .eq('id', id)
+    
+    if (error) {
+      console.error('Delete listing error:', error)
+      throw error
+    }
   }, [])
 
   const getListing = useCallback((id) => {
     return listings.find(l => l.id === id)
   }, [listings])
 
-  const resetToDefaults = useCallback(() => {
-    setListings(DEFAULT_LISTINGS)
-  }, [])
+  const resetToDefaults = useCallback(async () => {
+    await seedDefaults()
+  }, [seedDefaults])
 
   const value = {
     listings,

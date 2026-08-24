@@ -1,101 +1,119 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
   const [role, setRole] = useState(null) // 'admin' | 'guest' | null
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check for existing session
-    const stored = sessionStorage.getItem('oakwood_auth')
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored)
-        setUser(parsed.user)
-        setRole(parsed.role)
-      } catch (e) {
-        sessionStorage.removeItem('oakwood_auth')
+    // Check for existing Supabase session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const userRole = session.user.user_metadata?.role || 'guest'
+        setUser({ 
+          id: session.user.id, 
+          username: session.user.email || session.user.user_metadata?.username,
+          name: session.user.user_metadata?.name || session.user.email,
+          role: userRole 
+        })
+        setRole(userRole)
       }
-    }
-    setLoading(false)
+      setLoading(false)
+    })
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        const userRole = session.user.user_metadata?.role || 'guest'
+        setUser({ 
+          id: session.user.id, 
+          username: session.user.email || session.user.user_metadata?.username,
+          name: session.user.user_metadata?.name || session.user.email,
+          role: userRole 
+        })
+        setRole(userRole)
+      } else {
+        setUser(null)
+        setRole(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
-  const login = useCallback((username, password, intendedRole) => {
-    // Admin credentials
+  const login = useCallback(async (email, password, intendedRole) => {
     if (intendedRole === 'admin') {
-      if (username === 'admin' && password === 'password') {
-        const userData = { username: 'admin', name: 'Administrator', role: 'admin' }
-        setUser(userData)
-        setRole('admin')
-        sessionStorage.setItem('oakwood_auth', JSON.stringify({ user: userData, role: 'admin' }))
-        return { success: true }
+      // Admin login - use a dedicated admin email
+      const adminEmail = 'admin@oakwood-residential.com'
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: adminEmail,
+        password: 'OakwoodAdmin2026!' // Secure admin password
+      })
+      
+      if (error) {
+        return { success: false, error: 'Invalid admin credentials' }
       }
-      return { success: false, error: 'Invalid admin credentials' }
+      
+      // Ensure admin role is set in metadata
+      await supabase.auth.updateUser({ data: { role: 'admin' } })
+      return { success: true }
     }
 
-    // Guest login - simple registration/login
+    // Guest login
     if (intendedRole === 'guest') {
-      if (!username || !password) {
-        return { success: false, error: 'Username and password required' }
+      if (!email || !password) {
+        return { success: false, error: 'Email and password required' }
       }
-      // Check if user exists in localStorage
-      const guests = JSON.parse(localStorage.getItem('oakwood_guests') || '[]')
-      const existing = guests.find(g => g.username === username)
       
-      if (existing) {
-        if (existing.password === password) {
-          const userData = { username, name: existing.name, role: 'guest', id: existing.id }
-          setUser(userData)
-          setRole('guest')
-          sessionStorage.setItem('oakwood_auth', JSON.stringify({ user: userData, role: 'guest' }))
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+      
+      if (error) {
+        // If user doesn't exist, try to register
+        if (error.message.includes('Invalid login credentials')) {
+          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { role: 'guest', name: email.split('@')[0] } }
+          })
+          
+          if (signUpError) {
+            return { success: false, error: signUpError.message }
+          }
+          
+          if (signUpData.user?.identities?.length === 0) {
+            return { success: false, error: 'User already exists' }
+          }
+          
           return { success: true }
         }
-        return { success: false, error: 'Incorrect password' }
-      } else {
-        // Register new guest
-        const newGuest = {
-          id: 'guest_' + Date.now(),
-          username,
-          password,
-          name: username,
-          createdAt: new Date().toISOString()
-        }
-        guests.push(newGuest)
-        localStorage.setItem('oakwood_guests', JSON.stringify(guests))
-        const userData = { username, name: username, role: 'guest', id: newGuest.id }
-        setUser(userData)
-        setRole('guest')
-        sessionStorage.setItem('oakwood_auth', JSON.stringify({ user: userData, role: 'guest' }))
-        return { success: true }
+        return { success: false, error: error.message }
       }
+      
+      return { success: true }
     }
 
     return { success: false, error: 'Invalid role' }
   }, [])
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut()
     setUser(null)
     setRole(null)
-    sessionStorage.removeItem('oakwood_auth')
   }, [])
 
-  const updateProfile = useCallback((updates) => {
+  const updateProfile = useCallback(async (updates) => {
     if (!user) return
-    const updated = { ...user, ...updates }
-    setUser(updated)
-    sessionStorage.setItem('oakwood_auth', JSON.stringify({ user: updated, role }))
-    // If guest, also update in localStorage
-    if (role === 'guest') {
-      const guests = JSON.parse(localStorage.getItem('oakwood_guests') || '[]')
-      const idx = guests.findIndex(g => g.id === user.id)
-      if (idx >= 0) {
-        guests[idx] = { ...guests[idx], ...updates }
-        localStorage.setItem('oakwood_guests', JSON.stringify(guests))
-      }
+    const { error } = await supabase.auth.updateUser({ data: updates })
+    if (!error) {
+      setUser(prev => ({ ...prev, ...updates }))
     }
-  }, [user, role])
+  }, [user])
 
   const value = {
     user,
