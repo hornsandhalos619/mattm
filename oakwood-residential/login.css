@@ -1,0 +1,187 @@
+/* ========================================
+   OAKWOOD RESIDENCES — LOGIN PAGE STYLES
+   Matches admin portal design language
+   ======================================== */
+:root {
+  --gold: #f4a261;
+  --terra: #e76f51;
+  --terra-dark: #c45a3f;
+  --teal: #264653;
+  --teal-light: #2a9d8f;
+  --bg: #faf9f6;
+  --white: #ffffff;
+  --text: #2b2d42;
+  --text-light: #8d99ae;
+  --border: #e8e8e8;
+  --radius: 16px;
+  --transition: all .3s cubic-bezier(.4,0,.2,1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button, input, select, textarea { font-family: inherit; font-size: inherit; }
+
+/* ---------- Page ---------- */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* ---------- Card ---------- */
+.login-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 25px 50px rgba(0,0,0,.15);
+  width: 100%;
+  max-width: 420px;
+  padding: 56px 40px 48px;
+  animation: cardIn .4s ease;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(32px) scale(.96); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Logo ---------- */
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.login-logo svg {
+  width: 40px;
+  height: 40px;
+}
+
+.login-logo span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--terra);
+}
+
+/* ---------- Form ---------- */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-size: .9375rem;
+  background: var(--bg);
+  transition: var(--border-color .15s ease-in-out, border-color .15s ease-in-out);
+  outline: none;
+}
+
+.form-group input:hover {
+  border-color: var(--terra);
+}
+
+.form-group input:focus {
+  border-color: var(--gold);
+  background: var(--white);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm, 10px);
+  font-weight: 600;
+  font-size: .9375rem;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--terra);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--terra-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(231,111,81,.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  border-color: var(--terra);
+  color: var(--terra);
+}
+
+/* ---------- Links ---------- */
+.links {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.links a {
+  color: var(--text-light);
+  font-size: .875rem;
+  transition: var(--transition);
+}
+
+.links a:hover {
+  color: var(--terra);
+}
+
+/* ---------- Error state ---------- */
+.error-box {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #b31217;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  display: none;
+  font-size: .875rem;
+  font-weight: 500;
+}
+
+.error-box.visible {
+  display: block;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .login-card {
+    margin: 20px;
+    padding: 40px 24px 32px;
+  }
+}
