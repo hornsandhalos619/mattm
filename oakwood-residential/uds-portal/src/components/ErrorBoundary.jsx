@@ -27,7 +27,7 @@ class ErrorBoundary extends Component {
           alignItems: 'center', 
           justifyContent: 'center',
           padding: '20px',
-          background: 'var(--bg, #faf9f6)',
+          background: '#faf9f6',
           fontFamily: 'system-ui, sans-serif'
         }}>
           <div style={{
