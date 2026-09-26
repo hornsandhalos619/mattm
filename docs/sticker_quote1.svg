@@ -1,0 +1,20 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+      .bg { fill: #000000; }
+      .horn { fill: #8a0303; }
+      .halo { fill: #d4af37; opacity: 0.9; }
+      .quote { fill: #ffffff; font-family: 'Georgia', serif; font-size: 22px; text-anchor: middle; line-height: 1.5; max-width: 400px; }
+      .author { fill: #cccccc; font-family: 'Arial', sans-serif; font-size: 18px; text-anchor: middle; margin-top: 10px; }
+    ]]></style>
+  </defs>
+  <!-- Background -->
+  <rect width="100%" height="100%" class="bg"/>
+  <!-- Horn and halo as decorative elements -->
+  <path class="horn" d="M150,400 Q120,200 250,100 T400,200 L420,220 Q380,200 300,100 Z"/>
+  <path class="halo" d="M250,100 A150,150 0 0,1 550,250 A150,150 0 0,1 250,400 A150,150 0 0,1 -50,250 A150,150 0 0,1 250,100 Z"/>
+  <!-- Quote text -->
+  <text class="quote" x="250" y="200">"THE LIGHTEST SOULS</text>
+  <text class="quote" x="250" y="230">HAVE THE DARKEST SHADOWS"</text>
+  <text class="author" x="250" y="270">- Horns & Halos Philosophy</text>
+</svg>

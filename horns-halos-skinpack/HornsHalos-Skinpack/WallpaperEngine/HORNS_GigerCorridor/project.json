@@ -1,0 +1,29 @@
+{
+  "title": "HORNS: Giger Corridor",
+  "description": "Infinite vertebral tunnel with arterial lighting - biomechanical horror",
+  "type": "video",
+  "file": "giger_corridor.webm",
+  "preview": "preview.jpg",
+  "tags": [
+    "horror",
+    "biomechanical",
+    "giger",
+    "dark",
+    "animated"
+  ],
+  "author": "Cathedral of Flesh & Iron",
+  "version": "1.0",
+  "workshopid": 0,
+  "favorites": 0,
+  "subscriptions": 0,
+  "views": 0,
+  "created": "2026-08-26",
+  "updated": "2026-08-26",
+  "visibility": "public",
+  "properties": {
+    "loop": true,
+    "audio": false,
+    "playbackRate": 1.0,
+    "mute": true
+  }
+}

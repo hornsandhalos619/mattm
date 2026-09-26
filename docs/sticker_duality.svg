@@ -1,0 +1,21 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+      .horn { fill: #8a0303; }
+      .halo { fill: #d4af37; opacity: 0.9; }
+      .text-dark { fill: #ffffff; font-family: 'Arial Black', sans-serif; font-size: 28px; text-anchor: middle; }
+      .text-light { fill: #000000; font-family: 'Arial Black', sans-serif; font-size: 28px; text-anchor: middle; }
+      .bg { fill: #000000; }
+      .circle-bg { fill: #1a1a1a; }
+      .snarky { fill: #ffffff; font-family: 'Impact', sans-serif; font-size: 24px; text-anchor: middle; line-height: 1.2; }
+    ]]></style>
+  </defs>
+  <!-- Background -->
+  <circle class="circle-bg" cx="250" cy="250" r="230"/>
+  <!-- Dual design: horn left, halo right -->
+  <path class="horn" d="M150,400 Q120,250 200,150 T300,50 L320,70 Q280,150 230,250 Z"/>
+  <path class="halo" d="M250,50 A200,200 0 0,1 450,250 A200,200 0 0,1 250,450 A200,200 0 0,1 50,250 A200,200 0 0,1 250,50 Z"/>
+  <!-- Text -->
+  <text class="text-dark" x="250" y="380">DUALITY</text>
+  <text class="text-light" x="250" y="420">ACCEPTED</text>
+</svg>

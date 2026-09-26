@@ -1,0 +1,31 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+      .bg { fill: #000000; }
+      .horn { fill: #8a0303; }
+      .halo { fill: #d4af37; }
+      .text-primary { fill: #ffffff; font-family: 'Arial Black', sans-serif; font-size: 24px; text-anchor: middle; }
+      .text-secondary { fill: #cccccc; font-family: Arial, sans-serif; font-size: 18px; text-anchor: middle; }
+      .border { fill: none; stroke: #d4af37; stroke-width: 3; }
+    ]]></style>
+  </defs>
+  <!-- Rounded rectangle background -->
+  <rect x="10" y="10" width="380" height="280" rx="20" ry="20" class="bg"/>
+  <rect x="10" y="10" width="380" height="280" rx="20" ry="20" class="border"/>
+  
+  <!-- Horns at top corners -->
+  <path class="horn" d="M50,40 Q30,10 70,10 T110,10 L120,20 Q80,60 60,40 Z"/>
+  <path class="horn" d="M350,40 Q370,10 330,10 T290,10 L280,20 Q320,60 340,40 Z"/>
+  
+  <!-- Halos at bottom corners -->
+  <path class="halo" d="M50,260 A20,20 0 0,1 70,280 A20,20 0 0,1 50,260 Z"/>
+  <path class="halo" d="M350,260 A20,20 0 0,1 330,280 A20,20 0 0,1 350,260 Z"/>
+  
+  <!-- Main text -->
+  <text class="text-primary" x="200" y="140">STAY</text>
+  <text class="text-secondary" x="200" y="170">BLESSED & CURSED</text>
+  
+  <!-- Small decorative elements -->
+  <circle cx="100" cy="200" r="3" fill="#d4af37"/>
+  <circle cx="300" cy="200" r="3" fill="#8a0303"/>
+</svg>

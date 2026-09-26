@@ -1,0 +1,22 @@
+{
+  "title": "HALOS: Celestial Spires",
+  "description": "Gothic arches reaching heaven - golden ratio proportions",
+  "type": "video",
+  "file": "celestial_spires.webm",
+  "preview": "preview.jpg",
+  "tags": [
+    "celestial",
+    "gothic",
+    "golden",
+    "light",
+    "animated"
+  ],
+  "author": "Cathedral of Light",
+  "version": "1.0",
+  "properties": {
+    "loop": true,
+    "audio": false,
+    "playbackRate": 1.0,
+    "mute": true
+  }
+}

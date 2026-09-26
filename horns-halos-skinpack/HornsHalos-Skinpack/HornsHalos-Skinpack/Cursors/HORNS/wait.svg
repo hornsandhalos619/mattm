@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <circle cx="16" cy="16" r="14.4" fill="none" stroke="#FF001F" stroke-width="1.92" stroke-dasharray="6.4 3.2"/>
+  <circle cx="16" cy="16" r="8" fill="none" stroke="#8B0000" stroke-width="1.28"/>
+  <text x="16" y="21" text-anchor="middle" font-size="16" fill="#FF001F" font-family="MedievalSharp">☿</text>
+</svg>

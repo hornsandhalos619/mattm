@@ -1,0 +1,21 @@
+<svg width="text/css"><![CDATA[
+      .bg { fill: #000000; }
+      .horn { fill: #8a0303; }
+      .halo { fill: #d4af37; opacity: 0.9; }
+      .snarky { fill: #ffffff; font-family: 'Arial Black', sans-serif; font-size: 28px; text-anchor: middle; line-height: 1.4; }
+      .small { font-size: 20px; opacity: 0.9; }
+    ]]></style>
+  </defs>
+  <!-- Background -->
+  <rect width="100%" height="100%" class="bg"/>
+  <!-- Independent horn (left) -->
+  <path class="horn" d="M150,300 Q120,100 250,50 T400,150 L420,170 Q380,100 300,0 Z"/>
+  <!-- Independent halo (right) -->
+  <path class="halo" d="M450,200 A150,150 0 0,1 150,200 A150,150 0 0,1 450,200 Z"/>
+  <!-- Snarky phrases -->
+  <text class="snarky" x="300" y="120">HELL YES</text>
+  <text class="snarky small" x="300" y="160">AND HELL NO</text>
+  <text class="snarky" x="300" y="220">ANGEL ON ONE SHOULDER</text>
+  <text class="snarky small" x="300" y="260">DEVIL ON THE OTHER</text>
+  <text class="snarky" x="300" y="320">I LISTEN TO BOTH</text>
+</svg>

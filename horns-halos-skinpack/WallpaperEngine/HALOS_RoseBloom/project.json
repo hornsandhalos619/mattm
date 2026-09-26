@@ -1,0 +1,22 @@
+{
+  "title": "HALOS: Rose Window Bloom",
+  "description": "Mandala geometry with gold illumination rays - sacred geometry",
+  "type": "video",
+  "file": "rose_bloom.webm",
+  "preview": "preview.jpg",
+  "tags": [
+    "celestial",
+    "mandala",
+    "gold",
+    "sacred",
+    "animated"
+  ],
+  "author": "Cathedral of Light",
+  "version": "1.0",
+  "properties": {
+    "loop": true,
+    "audio": false,
+    "playbackRate": 1.0,
+    "mute": true
+  }
+}

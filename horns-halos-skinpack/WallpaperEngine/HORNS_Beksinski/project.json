@@ -1,0 +1,22 @@
+{
+  "title": "HORNS: Beksi\u0144ski Towers",
+  "description": "Apocalyptic spires emerging from fog - architectural decay",
+  "type": "video",
+  "file": "beksinski_towers.webm",
+  "preview": "preview.jpg",
+  "tags": [
+    "horror",
+    "beksinski",
+    "apocalyptic",
+    "dark",
+    "animated"
+  ],
+  "author": "Cathedral of Flesh & Iron",
+  "version": "1.0",
+  "properties": {
+    "loop": true,
+    "audio": false,
+    "playbackRate": 1.0,
+    "mute": true
+  }
+}

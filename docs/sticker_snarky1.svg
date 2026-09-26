@@ -1,0 +1,20 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+      .bg { fill: #000000; }
+      .horn { fill: #8a0303; }
+      .halo { fill: #d4af37; opacity: 0.8; }
+      .snarky { fill: #ffffff; font-family: 'Impact', sans-serif; font-size: 36px; text-anchor: middle; line-height: 1.3; letter-spacing: 1px; }
+      .small { font-size: 24px; opacity: 0.8; }
+    ]]></style>
+  </defs>
+  <!-- Background -->
+  <rect width="100%" height="100%" class="bg"/>
+  <!-- Horns (top left) -->
+  <path class="horn" d="M150,100 Q100,-50 250,50 T400,150 L420,170 Q380,100 300,0 Z"/>
+  <!-- Halo (bottom right) -->
+  <path class="halo" d="M450,300 A150,150 0 0,1 150,300 A150,150 0 0,1 450,300 Z"/>
+  <!-- Snarky text -->
+  <text class="snarky" x="300" y="200">I PRAY TO THE HORNS</text>
+  <text class="snarky small" x="300" y="250">AND SACRIFICE TO THE HALO</text>
+</svg>

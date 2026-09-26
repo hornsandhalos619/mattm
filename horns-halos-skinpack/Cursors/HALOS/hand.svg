@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <ellipse cx="16" cy="20.8" rx="7.04" ry="5.76" fill="#2C2C2C" stroke="#D4A843" stroke-width="0.96"/>
+  <path d="M14.08,16 Q14.08,12.8 14.08,5.12" fill="none" stroke="#2C2C2C" stroke-width="3.84" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M17.92,16 Q17.92,12.8 17.92,5.12" fill="none" stroke="#2C2C2C" stroke-width="3.84" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M11.84,16 Q11.84,12.8 11.84,5.12" fill="none" stroke="#2C2C2C" stroke-width="2.56" stroke-linecap="round"/>
+  <path d="M20.16,16 Q20.16,12.8 20.16,5.12" fill="none" stroke="#2C2C2C" stroke-width="2.56" stroke-linecap="round"/>
+</svg>

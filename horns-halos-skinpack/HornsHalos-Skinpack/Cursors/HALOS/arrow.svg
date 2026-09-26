@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path d="M16,4 L16,25.6" stroke="#FFD700" stroke-width="1.92" stroke-linecap="round"/>
+  <path d="M15.68,13.6 Q10.24,13.28 12.16,13.6 Q10.88,13.6 15.68,13.6" fill="#FFD700" stroke="none"/>
+  <path d="M16.32,13.6 Q21.76,13.28 19.84,13.6 Q21.12,13.6 16.32,13.6" fill="#FFD700" stroke="none"/>
+  <path d="M15.36,25.6 L16,30.4 L16.64,25.6 Z" fill="#FFD700"/>
+  <circle cx="16" cy="11.2" r="3.84" fill="none" stroke="#FFD700" stroke-width="1.28" opacity="0.5" filter="url(#glow)"/>
+</svg>

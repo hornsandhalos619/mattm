@@ -1,0 +1,20 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css"><![CDATA[
+      .horn { fill: #8a0303; }
+      .halo { fill: #d4af37; opacity: 0.9; }
+      .circle-bg { fill: #1a1a1a; }
+      .text { fill: #ffffff; font-family: 'Arial Black', sans-serif; font-size: 36px; text-anchor: middle; }
+      .subtitle { fill: #cccccc; font-family: Arial, sans-serif; font-size: 20px; text-anchor: middle; }
+    ]]></style>
+  </defs>
+  <!-- Background circle -->
+  <circle class="circle-bg" cx="300" cy="300" r="280"/>
+  <!-- Halo (top) -->
+  <path class="halo" d="M300,100 A200,200 0 0,1 500,300 A200,200 0 0,1 300,500 A200,200 0 0,1 100,300 A200,200 0 0,1 300,100 Z"/>
+  <!-- Horns (bottom) -->
+  <path class="horn" d="M200,500 Q180,350 250,250 T350,150 L370,170 Q330,250 280,350 Z"/>
+  <!-- Brand text -->
+  <text class="text" x="300" y="420">Horns & Halos</text>
+  <text class="subtitle" x="300" y="460">Streetwear Brand</text>
+</svg>
